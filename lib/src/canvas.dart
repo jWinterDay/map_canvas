@@ -38,46 +38,74 @@ class _CustomPainterDraggableState extends State<CustomPainterDraggable> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onPanStart: (DragStartDetails details) {
-        for (final FigureUi figure in _figuresSet) {
-          final bool isDragging = figure.calcIsDragging(
-            cursorPositionX: details.localPosition.dx,
-            cursorPositionY: details.localPosition.dy,
-            offset: _offset,
-          );
-          figure.isDragging = isDragging;
-        }
-      },
-      onPanEnd: (DragEndDetails details) {
-        for (final FigureUi figure in _figuresSet) {
-          figure.isDragging = false;
-        }
-      },
-      onPanUpdate: (DragUpdateDetails details) {
-        final FigureUi? draggedFigure = _figureDragged;
-
-        if (draggedFigure == null) {
-          _offset += details.delta;
-          setState(() {});
-          return;
-        }
-
-        setState(() {
-          draggedFigure.xPos += details.delta.dx;
-          draggedFigure.yPos += details.delta.dy;
-        });
-      },
-      child: Container(
-        color: Colors.white,
-        child: CustomPaint(
-          painter: _FiguresPainter(
-            figuresSet: _figuresSet,
-            offset: _offset,
-          ),
-          child: Container(),
+    return Column(
+      children: <Widget>[
+        // settings
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            SizedBox(
+              height: 40,
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _offset = Offset.zero;
+                    });
+                  },
+                  icon: const Icon(Icons.center_focus_strong),
+                  label: const Text('Center'),
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
+
+        // canvas
+        Expanded(
+          child: GestureDetector(
+            onPanStart: (DragStartDetails details) {
+              for (final FigureUi figure in _figuresSet) {
+                figure.isDragging = figure.calcIsDragging(
+                  cursorPositionX: details.localPosition.dx,
+                  cursorPositionY: details.localPosition.dy,
+                  offset: _offset,
+                );
+              }
+            },
+            onPanEnd: (DragEndDetails details) {
+              for (final FigureUi figure in _figuresSet) {
+                figure.isDragging = false;
+              }
+            },
+            onPanUpdate: (DragUpdateDetails details) {
+              final FigureUi? draggedFigure = _figureDragged;
+
+              if (draggedFigure == null) {
+                _offset += details.delta;
+                setState(() {});
+                return;
+              }
+
+              setState(() {
+                draggedFigure.xPos += details.delta.dx;
+                draggedFigure.yPos += details.delta.dy;
+              });
+            },
+            child: Container(
+              color: Colors.white,
+              child: CustomPaint(
+                painter: _FiguresPainter(
+                  figuresSet: _figuresSet,
+                  offset: _offset,
+                ),
+                child: Container(),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
