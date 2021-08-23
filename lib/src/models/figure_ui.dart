@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:map_canvas/src/figures/canvas_figure.dart';
+
 class FigureUi {
   FigureUi({
     this.xPos = 0,
@@ -7,6 +9,7 @@ class FigureUi {
     required this.width,
     required this.height,
     this.isDragging = false,
+    required this.canvasFigure,
   });
 
   double xPos;
@@ -16,6 +19,24 @@ class FigureUi {
   final double height;
 
   bool isDragging;
+
+  CanvasFigure canvasFigure;
+
+  void paint({
+    required Canvas canvas,
+    required Size size,
+    required Offset offset,
+  }) {
+    canvasFigure.paint(
+      canvas: canvas,
+      size: size,
+      xPos: xPos,
+      yPos: yPos,
+      width: width,
+      height: height,
+      offset: offset,
+    );
+  }
 
   bool calcIsDragging({
     required double cursorPositionX,

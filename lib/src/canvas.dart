@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:map_canvas/src/figures/canvas_arrow.dart';
+import 'package:map_canvas/src/figures/canvas_case.dart';
 import 'package:map_canvas/src/models/figure_ui.dart';
 
 const double kRectWidth = 100;
@@ -30,9 +32,9 @@ class _CustomPainterDraggableState extends State<CustomPainterDraggable> {
     super.initState();
 
     _figuresSet = <FigureUi>{
-      FigureUi(width: 50, height: 50, xPos: 50, yPos: 50),
-      FigureUi(width: 100, height: 50, xPos: 250, yPos: 250),
-      FigureUi(width: 50, height: 50, xPos: 150, yPos: 50),
+      FigureUi(width: 50, height: 50, xPos: 50, yPos: 50, canvasFigure: CanvasArrow()),
+      FigureUi(width: 100, height: 50, xPos: 250, yPos: 250, canvasFigure: CanvasCase()),
+      FigureUi(width: 20, height: 20, xPos: 150, yPos: 250, canvasFigure: CanvasCase()),
     };
   }
 
@@ -93,14 +95,14 @@ class _CustomPainterDraggableState extends State<CustomPainterDraggable> {
                 draggedFigure.yPos += details.delta.dy;
               });
             },
-            child: Container(
+            child: ColoredBox(
               color: Colors.white,
               child: CustomPaint(
                 painter: _FiguresPainter(
                   figuresSet: _figuresSet,
                   offset: _offset,
                 ),
-                child: Container(),
+                child: const SizedBox.expand(),
               ),
             ),
           ),
@@ -122,14 +124,11 @@ class _FiguresPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (final FigureUi figure in figuresSet) {
-      final Rect rect = Rect.fromLTWH(
-        figure.xPos + offset.dx,
-        figure.yPos + offset.dy,
-        figure.width,
-        figure.height,
+      figure.paint(
+        canvas: canvas,
+        size: size,
+        offset: offset,
       );
-
-      canvas.drawRect(rect, Paint());
     }
   }
 
