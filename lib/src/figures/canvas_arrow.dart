@@ -1,9 +1,27 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:map_canvas/src/figures/canvas_figure.dart';
 import 'package:map_canvas/src/models/figure_ui.dart';
 
-class CanvasArrow extends CanvasFigure {
+class CanvasArrow implements CanvasFigure {
+  CanvasArrow({
+    required this.from,
+    required this.to,
+  });
+
+  @override
+  double width = 100;
+
+  @override
+  double height = 100;
+
+  FigureUi from;
+
+  FigureUi to;
+
+  static const double _radius = 5;
+
   @override
   void paint({
     required Canvas canvas,
@@ -14,13 +32,27 @@ class CanvasArrow extends CanvasFigure {
     required double height,
     required Offset offset,
   }) {
-    final Rect rect = Rect.fromLTWH(
-      xPos + offset.dx,
-      yPos + offset.dy,
-      width,
-      height,
+    final Offset fromOffset = Offset(
+      from.xPos + offset.dx + from.canvasFigure.width,
+      from.yPos + offset.dy + from.canvasFigure.height / 2,
     );
 
-    canvas.drawOval(rect, Paint());
+    // line
+    final Paint paint = Paint()
+      ..color = Colors.green
+      ..style = PaintingStyle.stroke;
+
+    final Path path = Path()
+      ..moveTo(fromOffset.dx, fromOffset.dy)
+      ..lineTo(to.xPos + offset.dx, to.yPos + to.canvasFigure.height / 2 + offset.dy);
+    canvas.drawPath(path, paint);
+
+    // circle
+    final Paint circlePaint = Paint()..color = Colors.green;
+    canvas.drawCircle(
+      fromOffset,
+      _radius,
+      circlePaint,
+    );
   }
 }

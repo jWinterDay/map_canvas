@@ -6,8 +6,8 @@ class FigureUi {
   FigureUi({
     this.xPos = 0,
     this.yPos = 0,
-    required this.width,
-    required this.height,
+    // required this.width,
+    // required this.height,
     this.isDragging = false,
     required this.canvasFigure,
   });
@@ -15,8 +15,8 @@ class FigureUi {
   double xPos;
   double yPos;
 
-  final double width;
-  final double height;
+  // final double width;
+  // final double height;
 
   bool isDragging;
 
@@ -32,8 +32,8 @@ class FigureUi {
       size: size,
       xPos: xPos,
       yPos: yPos,
-      width: width,
-      height: height,
+      width: canvasFigure.width,
+      height: canvasFigure.height,
       offset: offset,
     );
   }
@@ -44,8 +44,8 @@ class FigureUi {
     required Offset offset,
   }) {
     return cursorPositionX >= (xPos + offset.dx) &&
-        cursorPositionX <= (xPos + offset.dx) + width &&
+        cursorPositionX <= (xPos + offset.dx) + canvasFigure.width &&
         cursorPositionY >= (yPos + offset.dy) &&
-        cursorPositionY <= (yPos + offset.dy) + height;
+        cursorPositionY <= (yPos + offset.dy) + canvasFigure.height;
   }
 }

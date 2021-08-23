@@ -1,6 +1,10 @@
 import 'dart:ui';
 
 abstract class CanvasFigure {
+  late double width;
+
+  late double height;
+
   void paint({
     required Canvas canvas,
     required Size size,

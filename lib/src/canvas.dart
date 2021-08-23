@@ -31,10 +31,23 @@ class _CustomPainterDraggableState extends State<CustomPainterDraggable> {
   void initState() {
     super.initState();
 
+    final FigureUi firstFigure = FigureUi(xPos: 50, yPos: 50, canvasFigure: CanvasCase());
+    final FigureUi secondFigure = FigureUi(xPos: 250, yPos: 150, canvasFigure: CanvasCase());
+
+    //
+    final CanvasArrow arrowFS = CanvasArrow(
+      from: firstFigure,
+      to: secondFigure,
+    );
+    // ..createRelationFrom(firstFigure)
+    // ..createRelationTo(secondFigure);
+
+    final FigureUi relationFS = FigureUi(xPos: 50, yPos: 50, canvasFigure: arrowFS);
+
     _figuresSet = <FigureUi>{
-      FigureUi(width: 50, height: 50, xPos: 50, yPos: 50, canvasFigure: CanvasArrow()),
-      FigureUi(width: 100, height: 50, xPos: 250, yPos: 250, canvasFigure: CanvasCase()),
-      FigureUi(width: 20, height: 20, xPos: 150, yPos: 250, canvasFigure: CanvasCase()),
+      firstFigure,
+      secondFigure,
+      relationFS,
     };
   }
 
